@@ -1,21 +1,21 @@
-title: "My JuliaCon proceeding"
+title: "Survey.jl - An Efficient Framework for Analysing Complex Surveys"
 keywords:
   - Julia
-  - Optimization
-  - Game theory
-  - Compiler
+  - Survey
+  - Statistics
+  - Sampling
 authors:
-  - name: 1st author
-    orcid: 0000-0003-1361-440X
+  - name: Ayush Patnaik
+    orcid: 0000-0001-9293-8845
     affiliation: 1
-  - name: 2nd author
-    affiliation: 1, 2
-  - name: 3rd author
-    affiliation: 2
+  # - name: 2nd author
+  #   affiliation: 1, 2
+  # - name: 3rd author
+  #   affiliation: 2
 affiliations:
-  - name: University
+  - name: XKDR Forum
     index: 1
-  - name: National Lab
-    index: 2
+  # - name: National Lab
+  #   index: 2
 date: 24 April 2019
 bibliography: ref.bib
