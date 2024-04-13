@@ -280,13 +280,13 @@ julia> mean(:api99, bsrs)
 
 \subsection{Jackknife}
 
-\begin{equation*}
+\begin{equation}
     w_{i(hj)} = \begin{cases}
         w_i & i \notin h\\
     0 & i \in j_{h} \\
     \dfrac{n_h}{n_h - 1} w_i &  i \in h \text{ and } i \notin j_{h}
     \end{cases}
-    \end{equation*} \cite{jackknifeLohr}
+    \end{equation} \cite{jackknifeLohr}
 
 
 \begin{lstlisting}
