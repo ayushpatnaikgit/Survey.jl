@@ -1,9 +1,17 @@
 \begin{thebibliography}{1}
 
-\bibitem{bezanson2017julia}
-Jeff Bezanson, Alan Edelman, Stefan Karpinski, and Viral~B Shah.
-Julia: A fresh approach to numerical computing.
-{\em SIAM review}, 59(1):65--98, 2017.
-\href{http://dx.doi.org/10.1137/141000671}{doi:10.1137/141000671}.
+\bibitem{SummarySurveyAnalysis}
+Summary of {{Survey Analysis Software}}.
+https://www.hcp.med.harvard.edu/statistics/survey-soft/\#Packages.
+
+\bibitem{jackknifeLohr}
+Sharon~L. Lohr.
+{\em Sampling Design and Analysis}.
+Cengage Learning, 2010.
+
+\bibitem{lumley2004analysis}
+Thomas Lumley.
+Analysis of complex survey samples.
+{\em Journal of statistical software}, 9:1--19, 2004.
 
 \end{thebibliography}
