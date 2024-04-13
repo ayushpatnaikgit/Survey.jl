@@ -63,80 +63,6 @@ The parameters are:
     \item \verb|popsize::Symbol|, name of the column containing the population size. 
 \end{itemize}
 
-%% Perhaps, have only 1 example, NHANES. Tell that there are others in the documentation. No need to repeast the documentation here. 
-
-% \subsection{Example: Simple random sample}
-
-% \begin{lstlisting}
-% julia> srs = load_data("apisrs");
-
-% julia> SurveyDesign(srs; weights=:pw)
-% SurveyDesign:
-% data: 200 x 45 DataFrame
-% strata: none
-% cluster: none
-% popsize: [6194.0, 6194.0, 6194.0 ...  6194.0]
-% sampsize: [200, 200, 200 ...  200]
-% weights: [30.97, 30.97, 30.97  ...  30.97]
-% allprobs: [0.0323, 0.0323, 0.0323  ...  0.0323]
-% \end{lstlisting}
-
-% \subsection{Example: Stratified sample}
-
-% \begin{lstlisting}
-% julia> strat = load_data("apistrat");
-
-% julia> dstrat = SurveyDesign(strat; weights = :pw,
-%                 strata = :stype)
-% SurveyDesign:
-% data: 200 x 44 DataFrame
-% strata: stype
-%     [E, E, E  ...  H]
-% cluster: none
-% popsize: [4420.9999, 4420.9999, 4420.9999  ...  755.0]
-% sampsize: [100, 100, 100  ...  50]
-% weights: [44.21, 44.21, 44.21  ...  15.1]
-% allprobs: [0.0226, 0.0226, 0.0226  ...  0.0662]
-% \end{lstlisting}
-
-% \subsection{Example: Clustered sample}
-
-% \begin{lstlisting}
-% julia> clus1 = load_data("apiclus1");
-
-% julia> dclus1 = SurveyDesign(clus1; weights = :pw,
-%                 clusters=:dnum)
-% SurveyDesign:
-% data: 200 x 45 DataFrame
-% strata: none
-% cluster: dnum
-%     [401, 401, 541  ...  802]
-% popsize: [5968.3499, 5968.3499, 5968.3499  ...  2038.5001]
-% sampsize: [135, 135, 135  ...  135]
-% weights: [44.21, 44.21, 44.21  ...  15.1]
-% allprobs: [0.0226, 0.0226, 0.0226  ...  0.0662]
-% \end{lstlisting}
-
-% \subsection{Example: Multistage sample}
-
-% \begin{lstlisting}
-% julia> apiclus2 = load_data("apiclus2")
-
-% julia> SurveyDesign(apiclus2; clusters=[:dnum, :snum])
-% Warning: As part of single-stage approximation, 
-%             only the first stage cluster ID is retained.
-% SurveyDesign:
-% data: 126x46 DataFrame
-% strata: none
-% cluster: dnum
-%     [15, 63, 83  ...  795]
-% popsize: [40, 40, 40  ...  40]
-% sampsize: [40, 40, 40  ...  40]
-% weights: [1, 1, 1  ...  1]
-% allprobs: [1.0, 1.0, 1.0  ...  1.0]
-% \end{lstlisting}
-
-
 \subsection{Example: Clustered and stratified}
 
 \begin{lstlisting}
@@ -157,22 +83,6 @@ allprobs: [0.0, 0.0001, 0.0001  ...  0.0002]
 \end{lstlisting}
 
 There is only 1 constructor for all kinds of surveys. Every survey is assumed to be a complex survey. If there is no stratification, we assume that everything is part of 1 strata. 
-
-% \begin{lstlisting}
-% if typeof(strata) <: Nothing
-%     data.false_strata = repeat(["FALSE_STRATA"], nrow(data))
-%     strata = :false_strata
-% end
-% \end{lstlisting}
-
-% If there is no clustering, we assume that every element is a cluster. 
-
-% \begin{lstlisting}
-% if typeof(clusters) <: Nothing
-%     data.false_cluster = 1:nrow(data)
-%     cluster = :false_cluster
-% end
-% \end{lstlisting} %% No need to show this implementation. In the session, better ways were pointed out. 
 
 \section{Estimation}
 
@@ -285,7 +195,7 @@ julia> mean(:api99, bsrs)
         w_i & i \notin h\\
     0 & i \in j_{h} \\
     \dfrac{n_h}{n_h - 1} w_i &  i \in h \text{ and } i \notin j_{h}
-    \end{cases}
+    \end{cases} %% Fix equation
     \end{equation} \cite{jackknifeLohr}
 
 
