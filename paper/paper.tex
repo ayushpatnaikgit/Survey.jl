@@ -19,7 +19,7 @@ Estimating variances in survey data analysis is challenging due to the complex n
 
 \section{Introduction}
 
-The growing volume of survey datasets necessitate more efficient analysis methods, particularly for variance estimation in complex survey designs. Computationally demanding resampling techniques, like bootstrapping and jackknife, are required when dealing with stratification, clustering, and unequal weights. 
+The growing volume of survey datasets necessitates more efficient analysis methods, particularly for variance estimation in complex survey designs. Computationally demanding resampling techniques, such as bootstrapping and jackknife, are required when dealing with stratification, clustering, and unequal weights. 
 \\
 
 Many software packages exist for survey analysis\footnote{A comprehensive list is provided by \cite{SummarySurveyAnalysis}}. Notable examples include the R survey package, SAS/STAT, SPSS Complex Samples, Stata, and SUDAAN. The R survey package by Thomas Lumley\cite{lumley2004analysis} is widely recognized for its comprehensive capabilities and open-source availability. However, it lacks computational efficiency needed for large-scale data. Survey.jl leverages Julia to offer a faster resampling framework for variance estimation and survey data analysis.
