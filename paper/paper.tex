@@ -242,9 +242,7 @@ $\hat{\theta}$ represents the estimator computed using the original weights, and
 
 \subsection{Extending variance estimation}
 
-Survey.jl supports variance estimation for basic estimators such as mean, quantile, ratio, and regressions. The package is designed to extend this capability to any estimator through a generalized approach.
-
-The \verb|Survey.variance| function can be applied to replicate designs to estimate the variance of any estimator function, allowing users and developers to extend variance estimation to custom estimators.
+Survey.jl currently supports variance estimation for the summary statistics functions provided by the package, but the framework can be extended to custom estimators. The \verb|variance| function can be applied to \verb|ReplicateDesign| objects to estimate the variance of an estimator function, such as \verb|Survey.mean|.
 
 % \begin{lstlisting}
 % function variance(
