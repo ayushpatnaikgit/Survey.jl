@@ -13,16 +13,16 @@
 
 \begin{abstract}
 
-Estimating variances in survey data analysis is challenging due to complex survey designs. It is typically done through resampling methods like bootstrapping. The Survey.jl package leverages Julia to provide an efficient framework for these resampling techniques, facilitating fast survey data analysis.
+Estimating variances in survey data analysis is challenging due to the complex nature of survey designs. It is typically done through resampling methods like bootstrapping. The Survey.jl package leverages Julia to provide an efficient framework for these resampling techniques, facilitating faster survey data analysis.
 
 \end{abstract}
 
 \section{Introduction}
 
-The growing volume of survey datasets necessitate more efficient analysis methods, particularly for variance estimation in complex survey designs. Computationally demanding resampling techniques, like bootstrapping and jackknife are required when there is with stratification, clustering, and unequal weights. 
+The growing volume of survey datasets necessitate more efficient analysis methods, particularly for variance estimation in complex survey designs. Computationally demanding resampling techniques, like bootstrapping and jackknife, are required when dealing with stratification, clustering, and unequal weights. 
 \\
 
-Many software packages exist for survey analysis\footnote{A comprehensive list is provided by \cite{SummarySurveyAnalysis}}. Notable examples include the R survey package, SAS/STAT, SPSS Complex Samples, Stata, and SUDAAN. The R survey package by Thomas Lumley\cite{lumley2004analysis} is widely recognized for its comprehensive capabilities and open-source availability. However, it lacks computational efficiency needed for large-scale data. The Survey.jl leverages Julia to offer a faster resampling framework for variance estimation and survey data analysis.
+Many software packages exist for survey analysis\footnote{A comprehensive list is provided by \cite{SummarySurveyAnalysis}}. Notable examples include the R survey package, SAS/STAT, SPSS Complex Samples, Stata, and SUDAAN. The R survey package by Thomas Lumley\cite{lumley2004analysis} is widely recognized for its comprehensive capabilities and open-source availability. However, it lacks computational efficiency needed for large-scale data. Survey.jl leverages Julia to offer a faster resampling framework for variance estimation and survey data analysis.
 
 %% Short summary of the paper
 
@@ -52,7 +52,7 @@ Many software packages exist for survey analysis\footnote{A comprehensive list i
 
 \section{Survey design}
 
-A \verb|SurveyDesign| object can be created to incorporate the sampling design. This object requires the following parameters: \verb|data::DataFrame|, which is the survey data in the form of a \verb|DataFrame|; \verb|clusters::Symbol|, specifying the column name containing the clusters; \verb|strata::Symbol|, specifying the column name containing the strata; \verb|weights::Symbol|, indicating the column name containing the sampling weights; and \verb|popsize::Symbol|, indicating the column name containing the population size.\footnote{Internaly, there is a single constructor for all types of surveys. Every survey is assumed to be a complex survey. If there is no stratification, we assume that everything is part of 1 stratum. If there is no clustering, we assume each member is a cluster.}  
+A \verb|SurveyDesign| object can be created to incorporate the sampling design. This object requires the following parameters: \verb|data::DataFrame|, which is the survey data in the form of a \verb|DataFrame|; \verb|clusters::Symbol|, specifying the column name containing the clusters; \verb|strata::Symbol|, specifying the column name containing the strata; \verb|weights::Symbol|, indicating the column name containing the sampling weights; and \verb|popsize::Symbol|, indicating the column name containing the population size.\footnote{Internaly, there is a single constructor for all types of surveys. Every survey is assumed to be a complex survey. If there is no stratification, we assume that everything is part of one stratum. If there is no clustering, we assume each member is a cluster.}  
 
 For example, consider the NHANES dataset, which includes clustering and stratification. The following example demonstrates how to create a \verb|SurveyDesign| object for this dataset:
 \begin{lstlisting}
@@ -126,7 +126,7 @@ julia> glm(@formula(y ~ x),
 
 The standard error of an estimator measures the average amount of variability or uncertainty in the estimated value. Standard errors are often provided alongside point estimates in various statistical packages.
 
-To estimate standard errors for complex survey designs, Survey.jl uses replicate weights, which are generated through resampling techniques such as bootstrap and jackknife. Each replicate sample represents a plausible variation of the original sample, allowing for the estimation of variability as if the sampling were repeated multiple times.
+To estimate standard errors for complex survey designs, Survey.jl uses replicate weights, generated through resampling techniques such as bootstrap and jackknife. Each replicate sample represents a plausible variation of the original sample, allowing for the estimation of variability as if the sampling were repeated multiple times.
 
 The estimate is calculated for each replicate, and then the standard error is computed from the distribution of these estimates. 
 
@@ -242,7 +242,7 @@ $\hat{\theta}$ represents the estimator computed using the original weights, and
 \end{equation}
 
 
-\subsection{Extending Variance Estimation}
+\subsection{Extending variance estimation}
 
 Survey.jl supports variance estimation for basic estimators such as mean, quantile, ratio, and regressions. The package is designed to extend this capability to any estimator through a generalized approach.
 
