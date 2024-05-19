@@ -54,8 +54,7 @@ Many software packages exist for survey analysis\footnote{A comprehensive list i
 
 A \verb|SurveyDesign| object can be created to incorporate the sampling design. This object requires the following parameters: \verb|data::DataFrame|, which is the survey data in the form of a \verb|DataFrame|; \verb|clusters::Symbol|, specifying the column name containing the clusters; \verb|strata::Symbol|, specifying the column name containing the strata; \verb|weights::Symbol|, indicating the column name containing the sampling weights; and \verb|popsize::Symbol|, indicating the column name containing the population size.\footnote{Internaly, there is a single constructor for all types of surveys. Every survey is assumed to be a complex survey. If there is no stratification, we assume that everything is part of 1 stratum. If there is no clustering, we assume each member is a cluster.}  
 
-\subsection{Example: Clustered and stratified}
-Consider the NHANES dataset, which includes clustering and stratification. The following example demonstrates how to create a \verb|SurveyDesign| object for this dataset:
+For example, consider the NHANES dataset, which includes clustering and stratification. The following example demonstrates how to create a \verb|SurveyDesign| object for this dataset:
 \begin{lstlisting}
     julia> nhanes = load_data("nhanes") 
     # CSV dataframe included with the package
@@ -103,7 +102,7 @@ julia> quantile(:x, design, 0.7)
 \end{lstlisting}
 This command estimates the 70th quantile of column \verb|:x|.
 
-For multivariate statistics such as regressions\footnote{Regressions are performed using GLM.jl. Instead of passing a DataFrame, a survey design is passed to the function, maintaining a familiar interface. This approach of using multiple dispatch is applied to all estimators imported from other packages, ensuring consistency and ease of use.}, the following example demonstrates its usage:
+For multivariate statistics such as regressions\footnote{Regressions are performed using GLM.jl. Instead of passing a DataFrame, a survey design is passed to the function, maintaining a familiar interface. This approach of using multiple dispatch is applied to all estimators imported from other packages, ensuring consistency and ease of use.}:
 
 \begin{lstlisting}
 julia> glm(@formula(y ~ x),
