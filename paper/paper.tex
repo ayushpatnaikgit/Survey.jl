@@ -94,9 +94,7 @@ design = SurveyDesign(apiclus1;
 % \end{lstlisting}
 \section{Estimation}
 
-Survey.jl provides basic univariate and multivariate estimators for efficient survey data analysis.
-
-For univariate statistics such as mean, median, total, and quantiles, the following examples illustrate their usage:
+Survey.jl provides a range of estimators for survey data analysis. These include univariate statistics such as mean, median, total, and quantiles, as well as multivariate statistics such as regressions and ratios. For example, to estimate the mean of the \verb|:api99| column in the \verb|design| SurveyDesign:
 
 \begin{lstlisting}
 julia> mean(:api99, design)
