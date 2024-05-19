@@ -56,15 +56,23 @@ A \verb|SurveyDesign| object can be created to incorporate the sampling design. 
 
 For example, consider the NHANES dataset, which includes clustering and stratification. The following example demonstrates how to create a \verb|SurveyDesign| object for this dataset:
 \begin{lstlisting}
-    julia> nhanes = load_data("nhanes") 
-    # CSV dataframe included with the package
-    
-    julia> design = SurveyDesign(nhanes;
-                        clusters=:SDMVPSU,
-                        strata=:SDMVSTRA, 
-                        weights=:WTMEC2YR)
-    \end{lstlisting}
+julia> nhanes = load_data("nhanes"); 
+# CSV dataframe included with the package
 
+julia> design = SurveyDesign(nhanes;
+                    clusters=:SDMVPSU,
+                    strata=:SDMVSTRA, 
+                    weights=:WTMEC2YR);
+    \end{lstlisting}
+Consider another example, a cluster sample based on the Academic Performance Index for all California schools based on standardised testing of students. There is no stratification in this example. 
+
+\begin{lstlisting}
+julia> apiclus1 = load_data("apiclus1"); 
+# CSV dataframe included with the package
+
+design = SurveyDesign(apiclus1; 
+            clusters=:dnum, weights=:pw);
+    \end{lstlisting}
 % \begin{lstlisting}
 % julia> nhanes = load_data("nhanes") 
 % # CSV dataframe included with the package
@@ -84,8 +92,6 @@ For example, consider the NHANES dataset, which includes clustering and stratifi
 % weights: [81528.772, 14509.2789, 12041.6354  ...  6443.674]
 % allprobs: [0.0, 0.0001, 0.0001  ...  0.0002]
 % \end{lstlisting}
-
-
 \section{Estimation}
 
 Survey.jl provides basic univariate and multivariate estimators for efficient survey data analysis.
@@ -93,14 +99,14 @@ Survey.jl provides basic univariate and multivariate estimators for efficient su
 For univariate statistics such as mean, median, total, and quantiles, the following examples illustrate their usage:
 
 \begin{lstlisting}
-julia> mean(:x, design)
-\end{lstlisting}
-This command estimates the mean of column \verb|:x|.
-
-\begin{lstlisting}
-julia> quantile(:x, design, 0.7)
-\end{lstlisting}
-This command estimates the 70th quantile of column \verb|:x|.
+julia> mean(:api99, design)
+1x1 DataFrame
+    Row | mean    
+        | Float64 
+--------|--------
+      1 | 606.978
+    \end{lstlisting}
+This command estimates the mean of column \verb|:api99|.
 
 For multivariate statistics such as regressions\footnote{Regressions are performed using GLM.jl. Instead of passing a DataFrame, a survey design is passed to the function, maintaining a familiar interface. This approach of using multiple dispatch is applied to all estimators imported from other packages, ensuring consistency and ease of use.}:
 
@@ -120,7 +126,7 @@ julia> glm(@formula(y ~ x),
 
 The standard error of an estimator measures the average amount of variability or uncertainty in the estimated value. Standard errors are often provided alongside point estimates in various statistical packages.
 
-To estimate standard errors for complex survey designs, Survey.jl uses replicate weights. These weights are generated through resampling techniques such as bootstrap and jackknife. Each replicate sample represents a plausible variation of the original sample, allowing for the estimation of variability as if the sampling were repeated multiple times.
+To estimate standard errors for complex survey designs, Survey.jl uses replicate weights, which are generated through resampling techniques such as bootstrap and jackknife. Each replicate sample represents a plausible variation of the original sample, allowing for the estimation of variability as if the sampling were repeated multiple times.
 
 The estimate is calculated for each replicate, and then the standard error is computed from the distribution of these estimates. 
 
@@ -180,10 +186,15 @@ julia> bdesign = bootweights(design; replicates = 1000)
 % \end{lstlisting}
 
 The replicate design object facilitates variance estimation. When a function receives a \verb|ReplicateDesign| rather than a \verb|SurveyDesign|, it provides the standard error along with the point estimate.
-
+For example: 
 \begin{lstlisting}
-julia> mean(:x, bdesign)
-\end{lstlisting}
+julia> mean(:api99, bdesign)
+1x2 DataFrame
+    Row | mean     SE      
+        | Float64  Float64 
+--------|-----------------
+      1 | 606.978  24.7505
+    \end{lstlisting}
 For each replicate $r$, $\hat{\theta}^*_r$ is the estimator of $\theta$, calculated the same way as $\hat{\theta}$ but using weights $w_i'(r)$ instead of the original weights $w_i$. The variance of the estimator is given by: 
 
 \begin{equation}
@@ -231,20 +242,19 @@ $\hat{\theta}$ represents the estimator computed using the original weights, and
 \end{equation}
 
 
-\section{Extending Variance Estimation}
+\subsection{Extending Variance Estimation}
 
-Currently, Survey.jl provides variance estimation for basic estimators such as mean, quantile, ratio, and regressions. However, the package is designed to support variance estimation for any estimator through a generalized approach. 
+Survey.jl supports variance estimation for basic estimators such as mean, quantile, ratio, and regressions. The package is designed to extend this capability to any estimator through a generalized approach.
 
-The \verb|variance| function can be used on replicate designs to estimate the variance of any estimator in the form of a function (along with its parameters) passed to it:
+The \verb|Survey.variance| function can be applied to replicate designs to estimate the variance of any estimator function, allowing users and developers to extend variance estimation to custom estimators.
 
-\begin{lstlisting}
-function variance(
-    design::ReplicateDesign,
-    func::Function, ...)
-\end{lstlisting}
+% \begin{lstlisting}
+% function variance(
+%     design::ReplicateDesign,
+%     func::Function, ...)
+% \end{lstlisting}
 
-This flexibility allows users and developers to extend variance estimation to custom estimators.
-
+% This flexibility allows users and developers to extend variance estimation to custom estimators.
 
 % at appropriate place in your \TeX{} file or in bibliography file.
 
@@ -252,7 +262,7 @@ This flexibility allows users and developers to extend variance estimation to cu
 Survey.jl offers an efficient framework for survey data analysis. Its functionality has been tested against R's survey package, and future development aims to port all features from R.
 
 \section{Acknowledgements}
-We gratefully acknowledge the financial support from JuliaLab at MIT for this project. Shikhar Misra has been a valuable contributor to the package. Iulia Dumitru and Nadia Enhaili have contributed through Google Summer of Code. Siddhant Chaudhary, Harsh Arora, Sayantika Dasgupta, and others have volunteered and contributed to this project. We thank Prof. Rajeeva Karandikar, Ajay Shah, Susan Thomas, Sourish Das, and Mousum Dutta for their valuable inputs.  
+We gratefully acknowledge the financial support from JuliaLab at MIT for this project. Shikhar Misra has been a key contributor, with Iulia Dumitru and Nadia Enhaili contributing through GSoC. Siddhant Chaudhary, Harsh Arora, Sayantika Dasgupta, and other volunteers have also contributed. We thank Prof. Rajeeva Karandikar, Ajay Shah, Susan Thomas, Sourish Das, and Mousum Dutta for their valuable inputs.
 
 \input{bib.tex}
 
