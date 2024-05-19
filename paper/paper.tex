@@ -233,7 +233,7 @@ In the jackknife method, each PSU is systematically omitted one at a time to cre
 
 This object can be passed to estimators to obtain an estimate of variance alongside the point estimate. 
 
-$\hat{\theta}$ represents the estimator computed using the original weights, and $\hat{\theta_{(hj)}}$ represents the estimator computed from the replicate weights obtained when PSU $j$ from cluster $h$ is removed. The variance is given by: 
+$\hat{\theta}$ represents the estimator computed using the original weights, and $\hat{\theta_{(hj)}}$ represents the estimator computed from the replicate weights obtained when PSU $j$ from cluster $h$ is removed. The variance is estimated as: 
 
 \begin{equation}
 \hat{V}_{\text{JK}}(\hat{\theta}) = \sum_{h = 1}^H \dfrac{n_h - 1}{n_h}\sum_{j = 1}^{n_h}(\hat{\theta}_{(hj)} - \hat{\theta})^2
