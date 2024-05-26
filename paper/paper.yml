@@ -8,14 +8,14 @@ authors:
   - name: Ayush Patnaik
     orcid: 0000-0001-9293-8845
     affiliation: 1
-  # - name: 2nd author
-  #   affiliation: 1, 2
+  - name: Nadia Enhaili
+    affiliation: 2
   # - name: 3rd author
   #   affiliation: 2
 affiliations:
   - name: XKDR Forum
     index: 1
-  # - name: National Lab
-  #   index: 2
+  - name: Simon Fraser University
+    index: 2
 date: 24 April 2019
 bibliography: ref.bib
