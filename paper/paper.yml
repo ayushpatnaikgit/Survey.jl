@@ -10,12 +10,16 @@ authors:
     affiliation: 1
   - name: Nadia Enhaili
     affiliation: 2
-  # - name: 3rd author
-  #   affiliation: 2
+  - name: Siddhant Chaudhary
+    affiliation: 3
+  # - name: 4th author
+  #   affiliation: 4
 affiliations:
   - name: XKDR Forum
     index: 1
   - name: Simon Fraser University
     index: 2
+  - name: Chennai Mathematical Institute
+    index: 3
 date: 24 April 2019
 bibliography: ref.bib
