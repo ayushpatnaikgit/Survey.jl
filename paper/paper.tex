@@ -110,7 +110,7 @@ For multivariate statistics such as regressions\footnote{Regressions are perform
 
 \begin{lstlisting}
 julia> glm(@formula(y ~ x),
-            my_design, Normal(), IdentityLink())
+            my_design, Normal(), IdentityLink()); 
 \end{lstlisting}
 
 
