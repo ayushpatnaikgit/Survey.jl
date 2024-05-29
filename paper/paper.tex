@@ -24,31 +24,6 @@ The growing volume of survey datasets necessitates more efficient analysis metho
 
 Many software packages exist for survey analysis\footnote{A comprehensive list is provided by \cite{SummarySurveyAnalysis}}. Notable examples include the R survey package, SAS/STAT, SPSS Complex Samples, Stata, and SUDAAN. The R survey package by Thomas Lumley\cite{lumley2004analysis} is widely recognized for its comprehensive capabilities and open-source availability. However, it is limited by R's computational efficiency, especially for large-scale data. Survey.jl leverages Julia to offer a faster resampling framework for variance estimation and survey data analysis.
 
-%% Short summary of the paper
-
-% \section{Related work}
-
-% %% Check links. It's from here: https://www.hcp.med.harvard.edu/statistics/survey-soft/#Packages
-
-% There are many packages for survey analysis. A list and summary of the packages is provided by Section on Survey Research Methods, American Statistical Association \cite{SummarySurveyAnalysis}. 
-
-% \href{https://www.hcp.med.harvard.edu/statistics/survey-soft/am.html}{AM Software}, 
-% \href{https://www.hcp.med.harvard.edu/statistics/survey-soft/bascula.html}{Bascula}, 
-% \href{https://www.hcp.med.harvard.edu/statistics/survey-soft/cenvar.html}{CENVAR}, 
-% \href{https://www.hcp.med.harvard.edu/statistics/survey-soft/clusters.html}{CLUSTERS},  
-% \href{https://www.cdc.gov/epiinfo/index.html}{Epi Info},  
-% \href{https://www.statcan.gc.ca/eng/survey/methodology/Generalized_Estimation_System-eng.htm}{Generalized Estimation System (GES)},  
-% \href{https://isr.umich.edu/}{IVEware},  
-% \href{https://catalog.iastate.edu/azcourses/stat/}{PCCARP},  
-% \href{https://cran.r-project.org/package=survey}{R survey package}, 
-% \href{https://www.sas.com/en_us/home.html}{SAS/STAT},  
-% \href{https://www.ibm.com/products/spss-statistics}{SPSS Complex Samples},  
-% \href{https://www.stata.com/}{Stata},  
-% \href{https://sudaanorder.rti.org/}{SUDAAN},  
-% \href{https://www.census.gov/data/software/vplx.html}{VPLX},  
-% \href{https://www.westat.com/wesvar/}{WesVar}
-
-% The survey package in R by Thomas Lumely \cite{lumley2004analysis} is the widely used open-source package. 
 
 \section{Survey design}
 
@@ -73,25 +48,7 @@ julia> apiclus1 = load_data("apiclus1");
 julia> design = SurveyDesign(apiclus1); 
             clusters=:dnum, weights=:pw);
     \end{lstlisting}
-% \begin{lstlisting}
-% julia> nhanes = load_data("nhanes") 
-% # CSV dataframe included with the package
 
-% julia> SurveyDesign(nhanes; clusters=:SDMVPSU,
-%                     strata=:SDMVSTRA, 
-%                     weights=:WTMEC2YR)
-
-% SurveyDesign:
-% data: 8591 x 11 DataFrame
-% strata: SDMVSTRA
-%     [83, 84, 86  ...  81]
-% cluster: SDMVPSU
-%     [1, 1, 2  ...  2]
-% popsize: [244586.316, 43527.8366, 36124.9061  ...  19331.022]
-% sampsize: [3, 3, 3  ...  3]
-% weights: [81528.772, 14509.2789, 12041.6354  ...  6443.674]
-% allprobs: [0.0, 0.0001, 0.0001  ...  0.0002]
-% \end{lstlisting}
 \section{Estimation}
 
 Survey.jl provides a range of estimators for survey data analysis. These include univariate statistics such as mean, median, total, and quantiles, as well as multivariate statistics such as regressions and ratios. For example, to estimate the mean of the \verb|:api99| column in the \verb|design| SurveyDesign:
@@ -113,13 +70,6 @@ julia> glm(@formula(y ~ x),
             my_design, Normal(), IdentityLink()); 
 \end{lstlisting}
 
-
-% And ratio: 
-
-% \begin{lstlisting}
-% julia> ratio(:y, :x, my_design)
-% \end{lstlisting}
-
 \section{Replicate weights}
 
 The standard error of an estimator measures the average amount of variability or uncertainty in the estimated value. Standard errors are often provided alongside point estimates in various statistical packages.
@@ -128,31 +78,11 @@ To estimate standard errors for complex survey designs, Survey.jl uses replicate
 
 The estimate is calculated for each replicate, and then the standard error is computed from the distribution of these estimates. 
 
-% Estimate design based standard errors by simulation. 
-%     \begin{itemize}
-%         \item Construction:
-%             \begin{itemize}
-%                 \item Replicate samples generated through resampling techniques (e.g., bootstrap, jackknife, BRR).
-%                 \item Each replicate sample represents a plausible variation of the original sample.
-%                 \item Standard error can be thought of as the variation if the sampling was done repeated. 
-%             \end{itemize}
-%         \item Usage:
-%             \begin{enumerate}
-%                 \item Generate replicate weights using bootstrap, jackknife, BRR, etc. 
-%                 \item Using each replicate weight, calculate the estimate. 
-%                 \item Calculate the standard error using the new set of estimates. 
-%             \end{enumerate}
-%         \end{itemize}
-
 \subsection{Bootstrapping}
 
 
 
 In the bootstrap method, each replicate \( r \) involves selecting a simple random sample of \( n_h - 1 \) primary sampling units (PSUs) with replacement from the \( n_h \) sample PSUs in stratum \( h \). The adjusted weight \( w_i'(r) \) for observation \( i \) in replicate \( r \) is calculated as:
-
-% For bootstrap replicate $r (r = 1, \dots, R)$, an SRS of $n_h - 1$ PSUs is selected with replacement from the $n_h$ sample PSUs in stratum $h$. $m_{hj}(r)$ represents the number of times PSU $j$ of stratum $h$ is selected in replicate $r$.
-
-% The adjusted weight $w_i'(r)$ for observation $i$ in replicate $r$ is calculated as:
 
 \begin{equation}
     w_i'(r) = w_i(r) \times \frac{n_h}{n_h - 1} \times m_{h}(r)
@@ -165,23 +95,6 @@ Where \( w_i(r) \) denotes the initial weight for observation \( i \) within rep
 \begin{lstlisting}
 julia> bdesign = bootweights(design; replicates = 1000)
 \end{lstlisting}
-
-
-% \begin{lstlisting}
-% julia> srs = SurveyDesign(apisrs; weights=:pw);
-
-% julia> bsrs = bootweights(srs; replicates = 1000)
-% ReplicateDesign{BootstrapReplicates}:
-% data: 200x1045 DataFrame
-% strata: none
-% cluster: none
-% popsize: [6194.0, 6194.0, 6194.0  ...  6194.0]
-% sampsize: [200, 200, 200  ...  200]
-% weights: [30.97, 30.97, 30.97  ...  30.97]
-% allprobs: [0.0323, 0.0323, 0.0323  ...  0.0323]
-% type: bootstrap
-% replicates: 1000
-% \end{lstlisting}
 
 The replicate design object facilitates variance estimation. When a function receives a \verb|ReplicateDesign| rather than a \verb|SurveyDesign|, it provides the standard error along with the point estimate.
 For example: 
@@ -208,7 +121,7 @@ In the jackknife method, each PSU is systematically omitted one at a time to cre
         w_i & i \notin h\\
     0 & i \in j_{h} \\
     \dfrac{n_h}{n_h - 1} w_i &  i \in h \text{ and } i \notin j_{h}
-    \end{cases} %% Fix equation
+    \end{cases} 
     \end{equation} \cite{Lohr}
 
 \verb|jackknifeweights| can be used to generate \verb|ReplicateDesign{JackknifeReplicates}| from a \verb|SurveyDesign|. 
@@ -216,20 +129,6 @@ In the jackknife method, each PSU is systematically omitted one at a time to cre
 \begin{lstlisting}
     julia> my_jackknife_design = jackknifeweights(my_design)
     \end{lstlisting}
-
-% \begin{lstlisting}
-% julia> jsrs = jackknifeweights(srs)
-% ReplicateDesign{JackknifeReplicates}:
-% data: 200x245 DataFrame
-% strata: none
-% cluster: none
-% popsize: [6194.0, 6194.0, 6194.0  ...  6194.0]
-% sampsize: [200, 200, 200  ...  200]
-% weights: [30.97, 30.97, 30.97  ...  30.97]
-% allprobs: [0.0323, 0.0323, 0.0323  ...  0.0323]
-% type: jackknife
-% replicates: 200
-% \end{lstlisting}
 
 This object can be passed to estimators to obtain an estimate of variance alongside the point estimate. 
 
@@ -244,21 +143,11 @@ $\hat{\theta}$ represents the estimator computed using the original weights, and
 
 Survey.jl currently supports variance estimation for the summary statistics functions provided by the package, but the framework can be extended to custom estimators. The \verb|variance| function can be applied to \verb|ReplicateDesign| objects to estimate the variance of an estimator function, such as \verb|Survey.mean|.
 
-% \begin{lstlisting}
-% function variance(
-%     design::ReplicateDesign,
-%     func::Function, ...)
-% \end{lstlisting}
-
-% This flexibility allows users and developers to extend variance estimation to custom estimators.
-
-% at appropriate place in your \TeX{} file or in bibliography file.
-
 \section{Conclusions}
 Survey.jl provides a comprehensive framework for survey data analysis, leveraging Julia's computational efficiency. The package has been tested against R's survey package, and future development aims to port all features from R.
 
 \section{Acknowledgements}
-We gratefully acknowledge the financial support from JuliaLab at MIT for this project. Shikhar Misra has been a key contributor, with Iulia Dumitru and Nadia Enhaili contributing through GSoC. Siddhant Chaudhary, Harsh Arora, Sayantika Dasgupta, and other volunteers have also contributed. We thank Prof. Rajeeva Karandikar, Ajay Shah, Susan Thomas, Sourish Das, and Mousum Dutta for their valuable inputs.
+We gratefully acknowledge the financial support from JuliaLab at MIT for this project. Iulia Dumitru has been a key contributor through GSoC. Harsh Arora, Sayantika Dasgupta, and other volunteers have also contributed. We thank Prof. Rajeeva Karandikar, Ajay Shah, Susan Thomas, Sourish Das, and Mousum Dutta for their valuable inputs.
 
 \input{bib.tex}
 
