@@ -70,7 +70,7 @@ Consider another example, a cluster sample based on the Academic Performance Ind
 julia> apiclus1 = load_data("apiclus1"); 
 # CSV dataframe included with the package
 
-design = SurveyDesign(apiclus1; 
+julia> design = SurveyDesign(apiclus1); 
             clusters=:dnum, weights=:pw);
     \end{lstlisting}
 % \begin{lstlisting}
